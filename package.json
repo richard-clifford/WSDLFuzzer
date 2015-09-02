@@ -1,0 +1,11 @@
+{
+    "name" : "WSDLFuzzer",
+    "version" : "1.0.0",
+    "description" : "A WSDL Fuzzing tool written by Mantis & d0gpants",
+    "main" : "main.js",
+    "dependencies" : {
+    	"soap": ">=0.9.1",
+	"command-line-args":">=1.0.0"
+    }
+}
+
