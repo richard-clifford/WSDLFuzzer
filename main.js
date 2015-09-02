@@ -1,14 +1,40 @@
-var soap = require('soap');
-var cliArgs = require('command-line-args');
+var cliColors = require('colors');
+
+
+// Global Debug Mode
+var debugMode = false;
 
 var commandLineOptions = [];
 
+
+function _parseWSDL() {
+	var soap = require('soap');
+
+	soap.createClient(commandLineOptions.wsdl, function(err, client){
+
+		if(err) {
+			console.log(err.toString());
+		}
+
+		for(var i in client) {
+			console.log(client[i]);
+		}
+	});
+
+}
+
+function fuzz() {
+	var wsdl = _parseWSDL();
+}
+
 function main() {
+	
+	var cliArgs = require('command-line-args');
 	
 	// available CLI args
 	var cli = cliArgs([
 		{name: 'verbose', alias: 'v', type: Boolean, defaultOption: false},
-		{name: 'wsdl', alias: 'w', type: String},
+		{name: 'wsdl', alias: 'u', type: String},
 		{name: 'smart-test', alias: 'S', type: Boolean, defaultOption: false},
 		{name: 'timeout', alias: 't', type: Number, defaultOption: 2000},
 		{name: 'use-ssl', alias: 's', type: Boolean, defaultOption: false},
@@ -16,18 +42,24 @@ function main() {
 		{name: 'help', alias: 'h', type: Boolean, defaultOption: false}
 	]);
 
+	
+	// parse the given options
+	commandLineOptions = cli.parse();
+	
 	var usage = cli.getUsage({
 		title: 'WSDLFuzzer',
 		description: 'A WSDL Fuzzing tool written in NodeJS by Mantis and d0gpants - irc.darkscience.net:+6697 #treehouse',
 		footer: 'Project home: [underline]{https://github.com/richard-clifford/WSDLFuzzer}'
 	});
-
-	// parse the given options
-	commandLineOptions = cli.parse();
 	
-	if(commandLineOptions.hasOwnProperty('help')) {
+	if(commandLineOptions.hasOwnProperty('help') || 
+		(!commandLineOptions.hasOwnProperty('wsdl'))) {
+
+		console.log("  --wsdl/-u is required".bold.blue);
 		console.log(usage);
 	}
+
+	var fuzzResults = fuzz();
 }
 
 main();

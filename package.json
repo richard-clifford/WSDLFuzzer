@@ -5,7 +5,8 @@
     "main" : "main.js",
     "dependencies" : {
     	"soap": ">=0.9.1",
-	"command-line-args":">=1.0.0"
+		"command-line-args":">=1.0.0",
+		"colors":">=1.1.2"
     }
 }
 
