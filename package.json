@@ -1,0 +1,11 @@
+{
+    "name" : "Beacon",
+    "version" : "1.0.0",
+    "description" : "A Simple Communication Tool",
+    "main" : "main.js",
+    "dependencies" : {
+		"command-line-args":">=1.0.0",
+		"colors":">=1.1.2"
+    }
+}
+
