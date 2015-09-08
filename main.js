@@ -2,7 +2,21 @@
 var cliColors = require('colors');
 var debugMode = false;
 var commandLineOptions = [];
+var wsdlMethods = [];
 
+// This method needs rethinking I think 
+function _describeMethods(methods) {
+    for(var i in methods) {
+        if(methods[i].hasOwnProperty('input')) {
+            wsdlMethods.push(methods);
+        } else {
+            if(typeof(methods) == "object") {
+                return _describeMethods(methods[i]);
+            }
+        }
+    }
+    return wsdlMethods;
+}
 
 function _parseWSDL() {
     var soap = require('soap');
@@ -13,15 +27,22 @@ function _parseWSDL() {
             console.log(err.toString());
         }
 
-        for(var i in client) {
-            console.log(client.describe().GlobalWeather.GlobalWeatherSoap.GetWeather.input.CityName);
-        }
-    });
+        var services = client.describe();
 
+        for(var i in services) {
+            _describeMethods(services[i]);
+        }
+
+        // Looks right - but not by the looks of it
+        Object.keys(wsdlMethods).forEach(function(e){
+            console.log(e, wsdlMethods[e]);
+        });
+    });
 }
 
 function fuzz() {
     var wsdl = _parseWSDL();
+
 }
 
 function main() {
